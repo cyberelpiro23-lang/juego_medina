@@ -4,7 +4,7 @@ export class Character {
     constructor(scene, color, xPos) {
         this.mesh = new THREE.Group();
         const body = new THREE.Mesh(
-            new THREE.CapsuleGeometry(0.5, 1, 4, 8),
+            new THREE.CapsuleGeometry(0.2, 1, 4, 8),
             new THREE.MeshStandardMaterial({ color: color })
         );
         body.position.y = 1;
@@ -19,8 +19,7 @@ export class Character {
     }
 
     mover(x, z) {
-        this.mesh.position.x += x * 0.15;
-        this.mesh.position.z += z * 0.15;
+    
         if (x !== 0 || z !== 0) this.mesh.rotation.y = Math.atan2(x, z);
     }
 }
