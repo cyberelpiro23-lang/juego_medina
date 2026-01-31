@@ -4,7 +4,7 @@ export class Character {
     constructor(scene, color, xPos) {
         this.mesh = new THREE.Group();
         const body = new THREE.Mesh(
-            new THREE.CapsuleGeometry(0.2, 1, 4, 8),
+            new THREE.CapsuleGeometry(0.5, 1, 4, 8),
             new THREE.MeshStandardMaterial({ color: color })
         );
         body.position.y = 1;
