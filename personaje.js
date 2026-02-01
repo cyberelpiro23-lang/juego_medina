@@ -8,13 +8,23 @@ export class Personaje {
         this.velocidad = 0.1; // Qué tan rápido se moverá
         this.cargarModelo(rutaModelo, x, z);
     }
-
-    cargarModelo(ruta, x, z) {
+cargarModelo(ruta, x, z) {
         const loader = new GLTFLoader();
         loader.load(ruta, (gltf) => {
-            this.modelo = gltf.scene;
+            // Guardamos el modelo en una constante para manipularlo más fácil
+            const objetoRaiz = gltf.scene;
+            
+            this.modelo = objetoRaiz;
             this.modelo.scale.set(0.5, 0.5, 0.5); 
             this.modelo.position.set(x, 0, z);
+
+            // --- AQUÍ ESTÁ EL TRUCO PARA EL GIRO ---
+            // Usamos Math.PI para girar. 
+            // Math.PI / 2 es igual a 90 grados.
+            // Si ves que se gira para el lado contrario, prueba con: -Math.PI / 2
+            // O si necesita media vuelta completa, usa solo: Math.PI
+            this.modelo.rotation.y = Math.PI; // Prueba primero con esto (180 grados)
+
             this.escena.add(this.modelo);
         });
     }
