@@ -2,72 +2,74 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego Medina - Prueba Local</title>
-    <style>body { margin: 0; overflow: hidden; background-color: #111; }</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egipto: El Rescate - Desarrollo Paso a Paso</title>
+    <style>
+        /* Eliminamos margenes y evitamos que aparezcan barras de scroll */
+        body { margin: 0; overflow: hidden; background-color: #000; }
+        canvas { display: block; }
+    </style>
 </head>
 <body>
+
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
             }
         }
     </script>
+
     <script type="module">
         import * as THREE from 'three';
-        import { Character } from './personaje.js';
 
+        // 1. LA ESCENA: Es el "espacio" donde viven los objetos.
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x222222);
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 10, 15);
-        camera.lookAt(0, 0, 0);
+        scene.background = new THREE.Color(0x111111); // Color de fondo oscuro
 
+        // 2. LA CÁMARA: Define desde dónde vemos el mundo.
+        // (Campo de visión, Proporción, Distancia mínima, Distancia máxima)
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 10, 15); // La elevamos y alejamos un poco
+        camera.lookAt(0, 0, 0);         // Hacemos que mire al centro
+
+        // 3. EL RENDERIZADOR: El motor que dibuja los gráficos en el canvas.
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(5, 10, 7);
-        scene.add(light);
+        // 4. LA LUZ: Sin luz, no veríamos nuestro modelo GLB (sería todo negro).
+        const luzAmbiental = new THREE.AmbientLight(0xffffff, 0.5); // Luz general suave
+        scene.add(luzAmbiental);
 
-        const floor = new THREE.Mesh(new THREE.PlaneGeometry(30, 20), new THREE.MeshStandardMaterial({ color: 0x444444 }));
-        floor.rotation.x = -Math.PI / 2;
-        scene.add(floor);
+        const luzDireccional = new THREE.DirectionalLight(0xffffff, 1); // Como si fuera el Sol
+        luzDireccional.position.set(5, 10, 7);
+        scene.add(luzDireccional);
 
-        const jugador1 = new Character(scene, 0x00ff00, -3);
-        const jugador2 = new Character(scene, 0x0000ff, 3);
-        let activo = jugador1;
+        // 5. EL SUELO (Referencia): Un plano para saber dónde estamos parados.
+        const sueloGeo = new THREE.PlaneGeometry(30, 30);
+        const sueloMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
+        const suelo = new THREE.Mesh(sueloGeo, sueloMat);
+        suelo.rotation.x = -Math.PI / 2; // Lo acostamos (está parado por defecto)
+        scene.add(suelo);
 
-        const caja = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshStandardMaterial({ color: 0xffa500 }));
-        caja.position.set(0, 0.5, 0);
-        scene.add(caja);
-
-        const teclas = {};
-        window.onkeydown = (e) => {
-            teclas[e.key.toLowerCase()] = true;
-            if(e.key.toLowerCase() === 'q') activo = (activo === jugador1) ? jugador2 : jugador1;
-        };
-        window.onkeyup = (e) => teclas[e.key.toLowerCase()] = false;
-
+        // 6. BUCLE DE ANIMACIÓN: Una función que se ejecuta 60 veces por segundo.
         function animate() {
             requestAnimationFrame(animate);
-            let dx = 0, dz = 0;
-            if (teclas['w']) dz -= 1; if (teclas['s']) dz += 1;
-            if (teclas['a']) dx -= 1; if (teclas['d']) dx += 1;
             
-            if (dx !== 0 || dz !== 0) {
-                activo.mover(dx, dz);
-                if (activo.mesh.position.distanceTo(caja.position) < 1.2) {
-                    caja.position.x = (Math.random() - 0.5) * 10;
-                    caja.position.z = (Math.random() - 0.5) * 10;
-                }
-            }
-            caja.rotation.y += 0.02;
-            renderer.render(scene, camera);
+            // Aquí irá más adelante la actualización de nuestros personajes
+            
+            renderer.render(scene, camera); // Dibujar la escena
         }
         animate();
+
+        // 7. RESPONSIVE: Si cambias el tamaño de la ventana, el juego se ajusta.
+        window.onresize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
     </script>
 </body>
 </html>
