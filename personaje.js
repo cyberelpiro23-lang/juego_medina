@@ -1,28 +1,21 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-// ... importaciones existentes de Three ...
-import { personaje } from './personaje.js'; // Conectamos nuestro molde
-// Esta es la "clase" o molde para crear a nuestros héroes
-export class personaje {
-    constructor(escena, archivoGLB, x, z) {
-        this.escena = escena;      // Guardamos la escena para saber dónde meter al personaje
-        this.modelo = null;         // Aquí guardaremos el cuerpo 3D cuando cargue
-        this.mixer = null;          // Este será el "reproductor" de animaciones
-        
-        // Llamamos a una función interna para cargar el archivo
-        this.cargarModelo(archivoGLB, x, z);
-    }
 
-    cargarModelo(archivoGLB, x, z) {
-        const loader = new GLTFLoader();
+// Usamos "export" para que el index.html pueda ver esta clase
+export class Personaje {
+    constructor(escena, x, z) {
+        this.escena = escena;
         
-        // Aquí es donde ocurre la magia de cargar el archivo de Blender
-        loader.load(archivoGLB, (gltf) => {
-            this.modelo = gltf.scene;
-            this.modelo.position.set(x, 0, z); // Lo ponemos en su sitio
-            
-            this.escena.add(this.modelo);      // ¡Lo metemos en el mundo!
-            console.log("¡Modelo cargado con éxito!");
-        });
+        // En lugar de cargar un modelo, creamos una esfera de prueba
+        const geometria = new THREE.SphereGeometry(1, 32, 32);
+        const material = new THREE.MeshStandardMaterial({ color: 0x00ff00 }); // Color verde
+        this.modelo = new THREE.Mesh(geometria, material);
+        
+        // La posicionamos
+        this.modelo.position.set(x, 1, z);
+        
+        // La añadimos a la escena
+        this.escena.add(this.modelo);
+        
+        console.log("¡La conexión funciona! Esfera creada.");
     }
 }
