@@ -3,7 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 // ... importaciones existentes de Three ...
 import { personaje } from './personaje.js'; // Conectamos nuestro molde
 // Esta es la "clase" o molde para crear a nuestros héroes
-export class Personaje {
+export class personaje {
     constructor(escena, archivoGLB, x, z) {
         this.escena = escena;      // Guardamos la escena para saber dónde meter al personaje
         this.modelo = null;         // Aquí guardaremos el cuerpo 3D cuando cargue
