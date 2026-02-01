@@ -20,12 +20,30 @@ export class Personaje {
     }
 
     // Esta función la llamaremos 60 veces por segundo
-    mover(teclas) {
-        if (!this.modelo) return; // Si el modelo no ha cargado, no hacemos nada
+  mover(teclas) {
+        if (!this.modelo) return;
 
-        if (teclas.w) this.modelo.position.z -= this.velocidad;
-        if (teclas.s) this.modelo.position.z += this.velocidad;
-        if (teclas.a) this.modelo.position.x -= this.velocidad;
-        if (teclas.d) this.modelo.position.x += this.velocidad;
+        // Creamos un vector para calcular la dirección del movimiento
+        const direccion = new THREE.Vector3(0, 0, 0);
+
+        if (teclas.w) direccion.z -= 1;
+        if (teclas.s) direccion.z += 1;
+        if (teclas.a) direccion.x -= 1;
+        if (teclas.d) direccion.x += 1;
+
+        // Solo si estamos presionando alguna tecla (la dirección no es cero)
+        if (direccion.length() > 0) {
+            // 1. Normalizamos la dirección (para que no camine más rápido en diagonal)
+            direccion.normalize();
+
+            // 2. Aplicamos el movimiento
+            this.modelo.position.addScaledVector(direccion, this.velocidad);
+
+            // 3. HACEMOS QUE MIRE HACIA DONDE SE MUEVE
+            // Calculamos un punto frente al personaje basado en la dirección
+            const puntoParaMirar = new THREE.Vector3();
+            puntoParaMirar.addVectors(this.modelo.position, direccion);
+            this.modelo.lookAt(puntoParaMirar);
+        }
     }
 }
