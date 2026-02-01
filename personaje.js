@@ -5,25 +5,27 @@ export class Personaje {
     constructor(escena, rutaModelo, x, z) {
         this.escena = escena;
         this.modelo = null;
+        this.velocidad = 0.1; // Qué tan rápido se moverá
         this.cargarModelo(rutaModelo, x, z);
     }
 
     cargarModelo(ruta, x, z) {
         const loader = new GLTFLoader();
-        
         loader.load(ruta, (gltf) => {
             this.modelo = gltf.scene;
-            
-            // --- AJUSTE DE ESCALA ---
-            // 0.5 significa 50% del tamaño original. 
-            // Si sigue grande, prueba con 0.2 o 0.1
             this.modelo.scale.set(0.5, 0.5, 0.5); 
-            
             this.modelo.position.set(x, 0, z);
             this.escena.add(this.modelo);
-            console.log("Personaje listo");
-        }, undefined, (error) => {
-            console.error("Error al cargar el modelo:", error);
         });
+    }
+
+    // Esta función la llamaremos 60 veces por segundo
+    mover(teclas) {
+        if (!this.modelo) return; // Si el modelo no ha cargado, no hacemos nada
+
+        if (teclas.w) this.modelo.position.z -= this.velocidad;
+        if (teclas.s) this.modelo.position.z += this.velocidad;
+        if (teclas.a) this.modelo.position.x -= this.velocidad;
+        if (teclas.d) this.modelo.position.x += this.velocidad;
     }
 }

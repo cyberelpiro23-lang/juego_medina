@@ -51,13 +51,34 @@
         scene.add(suelo);
 
         // Creación del personaje
-        const nina = new Personaje(scene, './assets/nina.glb', 0, 0);
+        // ... código anterior ...
+const nina = new Personaje(scene, './assets/nina.glb', 0, 0);
 
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-        animate();
+// --- SISTEMA DE CONTROL ---
+const teclas = { w: false, s: false, a: false, d: false };
+
+// Cuando presionas la tecla
+window.addEventListener('keydown', (e) => {
+    const tecla = e.key.toLowerCase();
+    if (teclas.hasOwnProperty(tecla)) teclas[tecla] = true;
+});
+
+// Cuando sueltas la tecla
+window.addEventListener('keyup', (e) => {
+    const tecla = e.key.toLowerCase();
+    if (teclas.hasOwnProperty(tecla)) teclas[tecla] = false;
+});
+
+// --- BUCLE DE ANIMACIÓN ACTUALIZADO ---
+function animate() {
+    requestAnimationFrame(animate);
+    
+    // Le pedimos a la niña que revise si debe moverse
+    nina.mover(teclas);
+    
+    renderer.render(scene, camera);
+}
+animate();
 
         window.onresize = () => {
             camera.aspect = window.innerWidth / window.innerHeight;
