@@ -23,7 +23,7 @@ cargarModelo(ruta, x, z) {
             // Math.PI / 2 es igual a 90 grados.
             // Si ves que se gira para el lado contrario, prueba con: -Math.PI / 2
             // O si necesita media vuelta completa, usa solo: Math.PI
-            this.modelo.rotation.y = Math.PI; // Prueba primero con esto (180 grados)
+            this.modelo.rotation.y = Math.PI/2; // Prueba primero con esto (180 grados)
 
             this.escena.add(this.modelo);
         });
