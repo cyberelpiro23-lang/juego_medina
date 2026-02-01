@@ -2,43 +2,51 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Test de Conexión - Egipto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egipto: El Rescate</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #111; }
+        body { margin: 0; overflow: hidden; background-color: #000; }
         canvas { display: block; }
     </style>
 </head>
 <body>
 
-  <script type="importmap">
-    {
-        "imports": {
-            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
-            "personaje": "./personaje.js"
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+                "personaje": "./personaje.js"
+            }
         }
-    }
-</script>
+    </script>
 
     <script type="module">
         import * as THREE from 'three';
         import { Personaje } from 'personaje';
 
-        // Escena básica
+        // 1. ESCENA
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(0, 5, 10);
-        camera.lookAt(0, 0, 0);
+        scene.background = new THREE.Color(0x222222);
 
+        // 2. CÁMARA
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 3, 7); 
+        camera.lookAt(0, 1, 0);
+
+        // 3. RENDERIZADOR
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Luz (necesaria para ver el color verde)
-        const luz = new THREE.AmbientLight(0xffffff, 1);
-        scene.add(luz);
+        // 4. LUCES
+        const luzAmbiental = new THREE.AmbientLight(0xffffff, 1); 
+        scene.add(luzAmbiental);
+        const luzDir = new THREE.DirectionalLight(0xffffff, 1);
+        luzDir.position.set(5, 5, 5);
+        scene.add(luzDir);
 
-        // Suelo de referencia
+        // 5. SUELO
         const suelo = new THREE.Mesh(
             new THREE.PlaneGeometry(20, 20),
             new THREE.MeshStandardMaterial({ color: 0x444444 })
@@ -46,15 +54,22 @@
         suelo.rotation.x = -Math.PI / 2;
         scene.add(suelo);
 
-        // --- TEST DE CONEXIÓN ---
-        // Si todo está bien, aparecerá una esfera verde en el centro
-        const testNina = new Personaje(scene, 0, 0);
+        // 6. CARGAR PERSONAJE
+        // Aquí usamos la ruta a la carpeta assets que creaste
+        const nina = new Personaje(scene, './assets/nina.glb', 0, 0);
 
+        // 7. BUCLE
         function animate() {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
         }
         animate();
+
+        window.onresize = () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        };
     </script>
 </body>
 </html>

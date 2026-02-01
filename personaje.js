@@ -17,11 +17,11 @@ export class Personaje {
                 this.modelo = gltf.scene;
                 this.modelo.position.set(x, 0, z);
                 this.escena.add(this.modelo);
-                console.log("¡Modelo cargado!");
+                console.log("¡Modelo cargado con éxito desde:", ruta, "!");
             },
-            undefined, // No necesitamos ver el progreso por ahora
+            undefined, 
             (error) => {
-                console.error("Error al cargar:", error);
+                console.error("No se pudo cargar el archivo GLB. Revisa la ruta en la carpeta assets.", error);
             }
         );
     }
