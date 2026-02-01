@@ -52,11 +52,13 @@
         const sueloMat = new THREE.MeshStandardMaterial({ color: 0x222222 });
         const suelo = new THREE.Mesh(sueloGeo, sueloMat);
         suelo.rotation.x = -Math.PI / 2; // Lo acostamos (está parado por defecto)
+        const nina = new Personaje(scene, './assets/nina.glb', 0, 0);
+        
+       
         scene.add(suelo);
         // 5.5 CREANDO AL PERSONAJE
         // (escena, ruta del archivo, posición X, posición Z)
-        const nina = new Personaje(scene, './assets/nina.glb', 0, 0);
-        
+       
 
 
 
