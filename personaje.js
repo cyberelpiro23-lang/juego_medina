@@ -11,18 +11,19 @@ export class Personaje {
     cargarModelo(ruta, x, z) {
         const loader = new GLTFLoader();
         
-        loader.load(
-            ruta, 
-            (gltf) => {
-                this.modelo = gltf.scene;
-                this.modelo.position.set(x, 0, z);
-                this.escena.add(this.modelo);
-                console.log("¡Modelo cargado con éxito desde:", ruta, "!");
-            },
-            undefined, 
-            (error) => {
-                console.error("No se pudo cargar el archivo GLB. Revisa la ruta en la carpeta assets.", error);
-            }
-        );
+        loader.load(ruta, (gltf) => {
+            this.modelo = gltf.scene;
+            
+            // --- AJUSTE DE ESCALA ---
+            // 0.5 significa 50% del tamaño original. 
+            // Si sigue grande, prueba con 0.2 o 0.1
+            this.modelo.scale.set(0.5, 0.5, 0.5); 
+            
+            this.modelo.position.set(x, 0, z);
+            this.escena.add(this.modelo);
+            console.log("Personaje listo");
+        }, undefined, (error) => {
+            console.error("Error al cargar el modelo:", error);
+        });
     }
 }
