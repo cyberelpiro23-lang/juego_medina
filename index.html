@@ -53,8 +53,14 @@
         const suelo = new THREE.Mesh(sueloGeo, sueloMat);
         suelo.rotation.x = -Math.PI / 2; // Lo acostamos (está parado por defecto)
         scene.add(suelo);
+        // 5.5 CREANDO AL PERSONAJE
+        // (escena, ruta del archivo, posición X, posición Z)
+        const nina = new Personaje(scene, './assets/nina.glb', 0, 0);
+        
 
-        // 6. BUCLE DE ANIMACIÓN: Una función que se ejecuta 60 veces por segundo.
+
+
+         // 6. BUCLE DE ANIMACIÓN: Una función que se ejecuta 60 veces por segundo.
         function animate() {
             requestAnimationFrame(animate);
             
