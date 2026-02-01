@@ -25,6 +25,7 @@ cargarModelo(ruta, x, z) {
             // O si necesita media vuelta completa, usa solo: Math.PI
             this.modelo.rotation.y = Math.PI*2; // Prueba primero con esto (180 grados)
 
+         
             this.escena.add(this.modelo);
         });
     }
