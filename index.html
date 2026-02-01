@@ -10,14 +10,15 @@
 </head>
 <body>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "personaje": "./personaje.js"
-            }
+  <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+            "personaje": "./personaje.js"
         }
-    </script>
+    }
+</script>
 
     <script type="module">
         import * as THREE from 'three';
